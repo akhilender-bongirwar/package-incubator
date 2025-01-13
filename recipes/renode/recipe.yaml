@@ -1,0 +1,57 @@
+context:
+  version: "1.15.3"
+
+package:
+  name: renode
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/renode/renode/releases/download/v${{ version }}/renode-${{ version }}-1-x86_64.pkg.tar.xz
+    sha256: 92bddeebcb1ba2217aa229f12f948c3c11303071b06fdd81d858dfa2a390ea8a
+
+build:
+  number: 1
+  script:
+    - mkdir -p $PREFIX/bin
+    - cp -r ${SRC_DIR}/opt/renode/bin/* $PREFIX/bin/
+    - chmod +x $PREFIX/bin/Renode.exe
+    - renode --version
+
+requirements:
+  build:
+    - if: win
+      then:
+        - dotnet-sdk
+    - if: linux
+      then:
+        - mono
+    - if: osx
+      then:
+        - mono
+
+  host:
+    - make
+
+  run:
+    - if: linux
+      then:
+        - conda-forge::libgtk2.0
+        - conda-forge::gtk-sharp2
+        - conda-forge::libicu
+        - conda-forge::gcc
+    - if: win
+      then:
+        - dotnet-sdk
+    - if: osx
+      then:
+        - mono
+
+about:
+  repository: https://github.com/renode/renode
+  license: MIT
+  summary: 'A simulation environment for developing and testing embedded software'
+  description: |
+    Renode is an open-source simulation framework that provides a complete environment for developing,
+    testing, and debugging embedded software. It allows developers to emulate hardware and software systems,
+    making it easier to test and develop embedded applications without the need for physical hardware.
+  homepage: https://renode.io
