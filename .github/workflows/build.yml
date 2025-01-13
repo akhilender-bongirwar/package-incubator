@@ -1,6 +1,5 @@
 name: Build all packages
 
-# this is important for trusted publishing
 permissions:
   id-token: write
 
